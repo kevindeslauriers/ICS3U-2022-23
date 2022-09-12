@@ -23,7 +23,7 @@ public class ExampleFour {
       // /=
       // %=
 
-      /**
+      /*
        * These operators will perform that operation on the variable and then reassign
        * that value to the variable.
        */
