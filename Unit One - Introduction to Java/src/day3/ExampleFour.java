@@ -2,7 +2,7 @@ package day3;
 
 public class ExampleFour {
    public static void main(String[] args) {
-      int x = 7;
+      int x = 7; // test
       x = x + 1; // x is assigned x + 1 - order of operations has = last
       System.out.println(x);
 
