@@ -7,7 +7,7 @@ public class ExampleTwo {
       int iNumDogs = numDogs;
       numDogs++;
       iNumDogs++;
-      System.out.println(numDogs);
+      System.out.println(numDogs + 4);
       System.out.println(iNumDogs);
       System.out.println(numDogs.intValue());
 

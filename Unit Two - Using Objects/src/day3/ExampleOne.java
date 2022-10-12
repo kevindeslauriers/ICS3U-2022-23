@@ -11,5 +11,12 @@ public class ExampleOne {
       grande.addCoffee(amountToAdd);
       System.out.println(grande.isFull());
 
+      System.out.println(CoffeeCup.testStatic());
+
+      grande.addOne();
+      venti.addOne();
+
+      grande.displayNum();
+      venti.displayNum();
    }
 }

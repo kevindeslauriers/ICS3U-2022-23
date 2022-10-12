@@ -3,6 +3,15 @@ package day3;
 public class CoffeeCup {
    private int sizeInOunces;
    private int amountLeft;
+   private static int num = 0;
+
+   public void addOne() {
+      num++;
+   }
+
+   public void displayNum() {
+      System.out.println(num);
+   }
 
    /*
     * Constructor: Creates a coffee cup of a specified size in ounces. The coffee
@@ -68,6 +77,12 @@ public class CoffeeCup {
       amountLeft += numOunces;
       if (amountLeft > sizeInOunces)
          amountLeft = sizeInOunces;
+   }
+
+   // Static is meant to be shared across all instances - belongs to the Class
+   // non-static belongs to the instance (object)
+   public static String testStatic() {
+      return "This is Static";
    }
 
    public int cupSize() {
