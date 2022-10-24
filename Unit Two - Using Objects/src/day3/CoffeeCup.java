@@ -1,11 +1,11 @@
 package day3;
 
 public class CoffeeCup {
-   private int sizeInOunces;
+   public int sizeInOunces;
    private int amountLeft;
-   private static int num = 0;
+   public static int num = 0;
 
-   public void addOne() {
+   public static void addOne() {
       num++;
    }
 
