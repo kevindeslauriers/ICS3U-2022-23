@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class BlackJack {
 
-   Scanner in = new Scanner(System.in);
+   static Scanner in = new Scanner(System.in);
 
    static final int STARTING_WALLET = 500;
    static final int MIN_BET = 5;
@@ -61,7 +61,6 @@ public class BlackJack {
          System.out.println("Player Cards: " + cards);
       else
          System.out.println("Dealer Cards: XX " + cards);
-
    }
 
    private static String getCard() {
@@ -96,8 +95,22 @@ public class BlackJack {
          return "" + iFace;
    }
 
-   private static int getBet(int i, int wallet) {
-      return 0;
+   private static int getBet(int minBet, int maxBet) {
+      int bet = 0;
+      boolean validBet = false;
+      while (!validBet) {
+         System.out.print("Please enter a bet (Min: $" + minBet + "): ");
+         try {
+            bet = Integer.parseInt(in.nextLine());
+            if (bet >= minBet && bet <= maxBet)
+               validBet = true;
+         } catch (NumberFormatException ex) {
+            System.out.println("Invalid Input");
+         }
+
+      }
+
+      return bet;
    }
 
 }
