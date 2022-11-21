@@ -4,7 +4,7 @@ public class NestedLoops {
    public static void main(String[] args) {
       // box(6, 5);
 
-      framingSquares(3, 4, 1, 2);
+      framingSquares(1, 2, 3, 4);
 
    }
 
