@@ -105,7 +105,7 @@ public class Blackjack {
    private static int getBet(int maxBet) {
 
       boolean validBet = false;
-      int bet = 0;
+      int bet = 0; // etst
       System.out.print("Please enter bet (MIN: $" + MIN_BET + ")");
       while (!validBet) {
          try {
