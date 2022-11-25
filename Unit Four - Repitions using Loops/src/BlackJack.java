@@ -77,6 +77,12 @@ public class BlackJack {
       int playerValue = getCardsValue(playerHand);
       int dealerValue = getCardsValue(dealerHand);
 
+      if (playerValue <= BLACK_JACK && ((playerValue > dealerValue) || (dealerValue > BLACK_JACK)))
+         return WIN;
+      else if ((dealerValue <= BLACK_JACK) && ((playerValue < dealerValue) || (playerValue > BLACK_JACK)))
+         return LOST;
+      else
+         return TIE;
    }
 
    private static int getCardsValue(String playerHand) {
