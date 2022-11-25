@@ -20,6 +20,7 @@ public class Blackjack {
    private static final String ACE = "A";
    private static final String QUEEN = "Q";
    private static final String KING = "K";
+   private static final int BLACK_JACK = 21;
 
    public static void main(String[] args) {
 
@@ -34,12 +35,19 @@ public class Blackjack {
          displayHand(playerHand, false, "Player: ");
          displayHand(dealerHand, true, "Dealer: ");
 
+         // returns who won
          int result = playHand(playerHand, dealerHand);
 
-         if (result == WIN)
+         if (result == WIN) {
             wallet += bet;
-         else if (result == LOST)
+            System.out.println("You WIN!");
+         } else if (result == LOST) {
             wallet -= bet;
+            System.out.println("You LOSE!");
+         } else {
+            System.out.println("You TIE!");
+
+         }
 
          if (wallet < MIN_BET) {
             stillPlaying = false;
@@ -51,16 +59,103 @@ public class Blackjack {
    }
 
    private static boolean playAgain() {
-      return false;
+      while (true) {
+         System.out.print("Play Again ([Y]es/[N]o): ");
+         String result = in.nextLine().toLowerCase();
+
+         if (result.equals("y") || result.equals("yes"))
+            return true;
+         else if (result.equals("n") || result.equals("no"))
+            return false;
+      }
+
    }
 
    // return WIN if player wins, LOST if player LOST and TIE if they tie
    private static int playHand(String playerHand, String dealerHand) {
-      return 0;
+      playerHand = playerTurn(playerHand);
+      dealerHand = dealerTurn(dealerHand);
+
+      int playerScore = getCardsValue(playerHand);
+      int dealerScore = getCardsValue(dealerHand);
+
+      if (playerScore <= BLACK_JACK && ((playerScore > dealerScore) || (dealerScore > BLACK_JACK)))
+         return WIN;
+      else if ((playerScore > BLACK_JACK) || dealerScore > playerScore)
+         return LOST;
+      else
+         return TIE;
+
+   }
+
+   private static int getCardsValue(String cards) {
+      int numAces = 0;
+
+      int scoreBeforeAces = 0;
+
+      for (int i = 0; i < cards.length(); i++) {
+         String s = cards.substring(i, i + 1);
+         if ("JQK1".indexOf(s) >= 0) {
+            scoreBeforeAces += 10;
+         } else if ("23456789".indexOf(s) >= 0) {
+            scoreBeforeAces += Integer.parseInt(s);
+         } else if ("A".equals(s)) {
+            numAces++;
+         }
+      }
+
+      // how do we deal with the aces
+      if (numAces > 0 && (scoreBeforeAces + 11 + numAces - 1) <= BLACK_JACK)
+         scoreBeforeAces += (11 + numAces - 1);
+      else
+         scoreBeforeAces += numAces;
+
+      return scoreBeforeAces;
+
+   }
+
+   private static String dealerTurn(String dealerHand) {
+      dealerHand += " " + getCard();
+      displayHand(dealerHand, false, "Dealer Hand: ");
+      while (getCardsValue(dealerHand) < 17) {
+         dealerHand += " " + getCard();
+         displayHand(dealerHand, false, "Dealer Hand: ");
+      }
+
+      return dealerHand;
+   }
+
+   private static String playerTurn(String playerHand) {
+      displayHand(playerHand, false, "Player Hand: ");
+
+      while (true) {
+         if (takeCard()) {
+            playerHand += " " + getCard();
+            displayHand(playerHand, false, "Player Hand: ");
+            if (getCardsValue(playerHand) > BLACK_JACK)
+               return playerHand;
+         } else {
+            return playerHand;
+         }
+      }
+   }
+
+   private static boolean takeCard() {
+      while (true) {
+         System.out.print("Hit (1) or Stand (2): ");
+         String result = in.nextLine();
+
+         if (result.equals("1"))
+            return true;
+         else if (result.equals("2"))
+            return false;
+         else
+            System.out.println("Invalid Input.");
+      }
    }
 
    private static void displayHand(String cards, boolean isHidden, String label) {
-      String result = label;
+      String result = "";
       if (isHidden)
          result += label + "XX " + cards;
       else

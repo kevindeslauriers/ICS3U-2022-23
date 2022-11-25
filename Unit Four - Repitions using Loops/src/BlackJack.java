@@ -48,7 +48,18 @@ public class BlackJack {
    }
 
    private static boolean promptPlayAgain() {
-      return false;
+      boolean validAnswer = false;
+
+      while (!validAnswer) {
+         System.out.print("Play Again ([Y]es/[N]o):");
+         String answer = in.nextLine().toLowerCase();
+         if (answer.equals("yes") || answer.equals("y"))
+            return true;
+         else if (answer.equals("no") || answer.equals("n"))
+            return false;
+      }
+
+      return true;
    }
 
    /* Returns the amount the player won negative value if they lost */
