@@ -3,79 +3,89 @@ import java.util.Scanner;
 public class BlackJack {
 
    static Scanner in = new Scanner(System.in);
-
-   static final int STARTING_WALLET = 500;
    static final int MIN_BET = 5;
-
-   static final int NUM_SUITS = 4;
-
-   static final String HEARTS = "H";
-   static final String CLUBS = "C";
-   static final String SPADES = "S";
-   static final String DIAMONDS = "D";
-
-   private static final double NUM_FACES = 13;
-
-   private static final String ACE = "A";
+   static final int STARTING_WALLET = 500;
+   private static final int WIN = 1;
+   private static final int LOST = -1;
+   private static final int TIE = 0;
+   private static final int NUM_SUITS = 4;
+   private static final String HEARTS = "H";
+   private static final String CLUBS = "C";
+   private static final String SPADES = "S";
+   private static final String DIAMONDS = "D";
+   private static final int NUM_VALUES = 13;
    private static final String JACK = "J";
+   private static final String ACE = "A";
    private static final String QUEEN = "Q";
    private static final String KING = "K";
+   private static final int BLACK_JACK = 21;
 
    public static void main(String[] args) {
-      String playerHand; // ex. AC 5D JS
-      String dealerHand; // 7C (single card until they actual play)
 
-      boolean isPlaying = true;
       int wallet = STARTING_WALLET;
+      boolean stillPlaying = true;
 
-      while (isPlaying) {
-         int bet = getBet(MIN_BET, wallet);
-         playerHand = getCard() + " " + getCard();
-         dealerHand = getCard();
-         displayHand(playerHand, true);
-         displayHand(dealerHand, false);
+      while (stillPlaying) {
+         int bet = getBet(wallet);
+         String playerHand = getCard() + " " + getCard();
+         String dealerHand = getCard();
 
-         wallet += playHand(playerHand, dealerHand, bet);
+         displayHand(playerHand, false, "Player: ");
+         displayHand(dealerHand, true, "Dealer: ");
+
+         // returns who won
+         int result = playHand(playerHand, dealerHand);
+
+         if (result == WIN) {
+            wallet += bet;
+            System.out.println("You WIN!");
+         } else if (result == LOST) {
+            wallet -= bet;
+            System.out.println("You LOSE!");
+         } else {
+            System.out.println("You TIE!");
+
+         }
 
          if (wallet < MIN_BET) {
-            System.out.println("Sorry you cannot play!");
-            isPlaying = false;
-         } else {
-            isPlaying = promptPlayAgain();
-         }
+            stillPlaying = false;
+            System.out.println("You do not have enough $$ to play.");
+         } else
+            stillPlaying = playAgain();
       }
 
    }
 
-   private static boolean promptPlayAgain() {
-      boolean validAnswer = false;
+   private static boolean playAgain() {
+      while (true) {
+         System.out.print("Play Again ([Y]es/[N]o): ");
+         String result = in.nextLine().toLowerCase();
 
-      while (!validAnswer) {
-         System.out.print("Play Again ([Y]es/[N]o):");
-         String answer = in.nextLine().toLowerCase();
-         if (answer.equals("yes") || answer.equals("y"))
+         if (result.equals("y") || result.equals("yes"))
             return true;
-         else if (answer.equals("no") || answer.equals("n"))
+         else if (result.equals("n") || result.equals("no"))
             return false;
       }
 
-      return true;
    }
 
-   /* Returns the amount the player won negative value if they lost */
-   private static int playHand(String playerHand, String dealerHand, int bet) {
+   // return WIN if player wins, LOST if player LOST and TIE if they tie
+   private static int playHand(String playerHand, String dealerHand) {
       return 0;
    }
 
-   private static void displayHand(String cards, boolean isPlayer) {
-      if (isPlayer)
-         System.out.println("Player Cards: " + cards);
+   private static void displayHand(String cards, boolean isHidden, String label) {
+      String result = "";
+      if (isHidden)
+         result += label + "XX " + cards;
       else
-         System.out.println("Dealer Cards: XX " + cards);
+         result += label + cards;
+
+      System.out.println(result);
    }
 
    private static String getCard() {
-      return getFace() + getSuit();
+      return getValue() + getSuit();
    }
 
    private static String getSuit() {
@@ -84,44 +94,51 @@ public class BlackJack {
       if (iSuit == 1)
          return HEARTS;
       else if (iSuit == 2)
-         return CLUBS;
-      else if (iSuit == 3)
          return SPADES;
+      else if (iSuit == 3)
+         return CLUBS;
       else
          return DIAMONDS;
+
    }
 
-   private static String getFace() {
-      int iFace = (int) (Math.random() * NUM_FACES) + 1;
+   private static String getValue() {
+      int iValue = (int) (Math.random() * NUM_VALUES) + 1;
 
-      if (iFace == 1)
+      if (iValue == 1)
          return ACE;
-      else if (iFace == 11)
+      else if (iValue == 11)
          return JACK;
-      else if (iFace == 12)
+      else if (iValue == 12)
          return QUEEN;
-      else if (iFace == 13)
+      else if (iValue == 13)
          return KING;
       else
-         return "" + iFace;
+         return "" + iValue;
    }
 
-   private static int getBet(int minBet, int maxBet) {
-      int bet = 0;
+   private static int getBet(int maxBet) {
+
       boolean validBet = false;
+      int bet = 0; // etst
+      System.out.print("Please enter bet (MIN: $" + MIN_BET + ")");
       while (!validBet) {
-         System.out.print("Please enter a bet (Min: $" + minBet + "): ");
          try {
             bet = Integer.parseInt(in.nextLine());
-            if (bet >= minBet && bet <= maxBet)
+
+            if (bet > maxBet)
+               System.out.print("Please enter bet (MAX: $" + maxBet + ")");
+            else if (bet < MIN_BET)
+               System.out.print("Please enter bet (MIN: $" + MIN_BET + ")");
+            else
                validBet = true;
          } catch (NumberFormatException ex) {
-            System.out.println("Invalid Input");
+            System.out.println("Invalid Bet");
+            System.out.print("Please enter bet (MIN: $" + MIN_BET + ")");
          }
-
       }
 
       return bet;
-   }
 
+   }
 }
