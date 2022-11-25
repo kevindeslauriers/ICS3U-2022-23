@@ -85,16 +85,44 @@ public class BlackJack {
          return TIE;
    }
 
-   private static int getCardsValue(String playerHand) {
+   private static int getCardsValue(String cards) {
+
+      int sum = 0;
+
+      for (int i = 0; i < cards.length(); i++) {
+         String s = cards.substring(i, i + 1);
+      }
+
       return 0;
    }
 
    private static String dealerTurn(String dealerHand) {
-      return null;
+      while (true) {
+         if (getCardsValue(dealerHand) < 17)
+            dealerHand += " " + getCard();
+         else
+            return dealerHand;
+      }
    }
 
    private static String playerTurn(String playerHand) {
-      return null;
+      boolean keepPlaying = true;
+
+      while (keepPlaying) {
+         displayHand(playerHand, false, "Player: ");
+         System.out.print("Hit (1) or Stand (2): ");
+         String result = in.nextLine();
+
+         if (result.equals(("1"))) {
+            playerHand += " " + getCard();
+            if (getCardsValue(playerHand) > BLACK_JACK)
+               keepPlaying = false;
+         } else if (result.equals(("2"))) {
+            keepPlaying = false;
+         }
+      }
+
+      return playerHand;
    }
 
    private static void displayHand(String cards, boolean isHidden, String label) {
