@@ -71,7 +71,24 @@ public class BlackJack {
 
    // return WIN if player wins, LOST if player LOST and TIE if they tie
    private static int playHand(String playerHand, String dealerHand) {
+      playerHand = playerTurn(playerHand);
+      dealerHand = dealerTurn(dealerHand);
+
+      int playerValue = getCardsValue(playerHand);
+      int dealerValue = getCardsValue(dealerHand);
+
+   }
+
+   private static int getCardsValue(String playerHand) {
       return 0;
+   }
+
+   private static String dealerTurn(String dealerHand) {
+      return null;
+   }
+
+   private static String playerTurn(String playerHand) {
+      return null;
    }
 
    private static void displayHand(String cards, boolean isHidden, String label) {
