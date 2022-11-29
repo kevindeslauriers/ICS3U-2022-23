@@ -17,7 +17,7 @@ public class Horse {
 
          }
          j++;
-         Thread.sleep(5 0);
+         Thread.sleep(200);
          clrscr();
       }
    }

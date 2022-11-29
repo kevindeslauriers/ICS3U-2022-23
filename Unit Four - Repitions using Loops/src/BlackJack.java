@@ -30,7 +30,7 @@ public class BlackJack {
          String playerHand = getCard() + " " + getCard();
          String dealerHand = getCard();
 
-         displayHand(playerHand, false, "Player: ");
+         // displayHand(playerHand, false, "Player: ");
          displayHand(dealerHand, true, "Dealer: ");
 
          // returns who won
@@ -76,6 +76,7 @@ public class BlackJack {
 
       int playerValue = getCardsValue(playerHand);
       int dealerValue = getCardsValue(dealerHand);
+      displayHand(dealerHand, false, "Dealer: ");
 
       if (playerValue <= BLACK_JACK && ((playerValue > dealerValue) || (dealerValue > BLACK_JACK)))
          return WIN;
@@ -88,15 +89,30 @@ public class BlackJack {
    private static int getCardsValue(String cards) {
 
       int sum = 0;
+      int numAces = 0;
 
       for (int i = 0; i < cards.length(); i++) {
          String s = cards.substring(i, i + 1);
+         if ("KQJ1".indexOf(s) >= 0)
+            sum += 10;
+         else if ("A".equals(s)) {
+            numAces++;
+         } else if ("23456789".indexOf(s) >= 0) {
+            sum += Integer.parseInt(s);
+         }
       }
 
-      return 0;
+      if (numAces > 0) {
+         sum += 11 + numAces - 1;
+         if (sum > BLACK_JACK)
+            sum -= 10;
+      }
+
+      return sum;
    }
 
    private static String dealerTurn(String dealerHand) {
+      dealerHand += " " + getCard();
       while (true) {
          if (getCardsValue(dealerHand) < 17)
             dealerHand += " " + getCard();
