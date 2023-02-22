@@ -1,3 +1,5 @@
+import java.nio.channels.IllegalSelectorException;
+
 /******************************************************************************
  * A DoubleArraySequence is a collection of double numbers.
  * The sequence can have a special "current element," which is specified and
@@ -29,7 +31,7 @@
 public class DoubleArraySequence implements Cloneable {
    private static final int DEFAULT_CAPACITY = 10;
    // Invariant of the DoubleArraySequence class:
-   // 1. The number of elements in the seqeunces is in the instance variable
+   // 1. The number of elements in the sequences is in the instance variable
    // manyItems.
    // 2. For an empty sequence (with no elements), we do not care what is
    // stored in any of data; for a non-empty sequence, the elements of the
@@ -86,6 +88,27 @@ public class DoubleArraySequence implements Cloneable {
       data = new double[initialCapacity];
       manyItems = 0;
       currentIndex = 0;
+   }
+
+   /**
+    * Initialize a DoubleArraySequence as a copy of DoubleArraySequence src
+    * 
+    * 
+    * @precondition
+    *               src is not null
+    * @postcondition
+    *                This sequence is a copy of the DoubleArraySequence src.
+    * @exception IllegalArgumentException
+    *                                     Indicates src was negative.
+    **/
+   public DoubleArraySequence(DoubleArraySequence src) {
+      this.data = new double[src.data.length];
+      this.manyItems = src.manyItems;
+      this.currentIndex = src.currentIndex;
+
+      for (int i = 0; i < data.length; i++) {
+         data[i] = src.data[i];
+      }
    }
 
    /**
@@ -194,7 +217,10 @@ public class DoubleArraySequence implements Cloneable {
     *                                  advance may not be called.
     **/
    public void advance() {
-
+      if (!isCurrent()) {
+         throw new IllegalStateException("No current Element");
+      }
+      currentIndex++;
    }
 
    /**
@@ -283,7 +309,7 @@ public class DoubleArraySequence implements Cloneable {
     *         the current capacity of this sequence
     **/
    public int getCapacity() {
-      return -1;
+      return data.length;
    }
 
    /**
@@ -314,7 +340,7 @@ public class DoubleArraySequence implements Cloneable {
     **/
    public boolean isCurrent() { // see if sequence has a specified current element
 
-      return true;
+      return manyItems != currentIndex;
    }
 
    /**
@@ -349,7 +375,7 @@ public class DoubleArraySequence implements Cloneable {
     **/
    public int size() { // Determine the number of elements in this sequence.
 
-      return -1;
+      return manyItems;
    }
 
    /**
@@ -388,10 +414,5 @@ public class DoubleArraySequence implements Cloneable {
 
    public void setCurrentIndex(int currentIndex) {
       this.currentIndex = currentIndex;
-   }
-
-   // The new double array sequence is a copy of the DoubleArraySequence src.
-   public DoubleArraySequence(DoubleArraySequence src) {
-
    }
 }
