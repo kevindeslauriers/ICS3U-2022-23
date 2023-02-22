@@ -2,7 +2,7 @@ public class MultiDimensionalArrays {
 
   public static void main(String[] args) {
     // exampleOne();
-    // exampleTwo();
+    exampleTwo();
     // exampleThree(2, 8);
     // exampleFour();
     exampleFive(); // can't do it. I tried
@@ -59,10 +59,15 @@ public class MultiDimensionalArrays {
 
     display(arr2D);
 
-    int sum = sum2DArray(arr2D);
+    arr2D[1] = new int[10];
+    arr2D[1][6] = 8;
 
-    System.out.println("The sum of the elements in the 2D Array is " + sum);
-    System.out.println();
+    display(arr2D);
+
+    // int sum = sum2DArray(arr2D);
+
+    // System.out.println("The sum of the elements in the 2D Array is " + sum);
+    // System.out.println();
   }
 
   private static int sum2DArray(int[][] arr2d) {
@@ -101,7 +106,6 @@ public class MultiDimensionalArrays {
         x++;
       }
     }
-
   }
 
   private static void display(int[][] arr2d) {
